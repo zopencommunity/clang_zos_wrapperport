@@ -1,5 +1,5 @@
 ###
-### Build control file for the clang_wrapper port
+### Build control file for the clang_zos_wrapper port
 ###
 
 ###
@@ -47,7 +47,7 @@ zopen_get_version() {
 
 # zopen_init is used to download the binary artifact.
 zopen_init() {
-  # Example: curl -L -o clang_wrapper.war ${ZOPEN_STABLE_URL}
+  # Example: curl -L -o clang_zos_wrapper.war ${ZOPEN_STABLE_URL}
   echo "BARE port zopen_init hook needs to be implemented to download the artifact."
 }
 
@@ -73,33 +73,42 @@ deps="../../check_clang/check_clang ../../zoslib/zoslib"
 for dep in $deps; do
   [ -f "$dep/.env" ] || continue
   
-  # Save current directory and ZOPEN_EXTRA_* variables
+  # Save current directory and both ZOPEN_* and ZOPEN_EXTRA_* variables
   saved_pwd="$(pwd)"
-  saved_CFLAGS="${ZOPEN_EXTRA_CFLAGS-}"
-  saved_CXXFLAGS="${ZOPEN_EXTRA_CXXFLAGS-}"
-  saved_CPPFLAGS="${ZOPEN_EXTRA_CPPFLAGS-}"
-  saved_LDFLAGS="${ZOPEN_EXTRA_LDFLAGS-}"
-  saved_LIBS="${ZOPEN_EXTRA_LIBS-}"
+  saved_ZOPEN_CFLAGS="${ZOPEN_CFLAGS-}"
+  saved_ZOPEN_CXXFLAGS="${ZOPEN_CXXFLAGS-}"
+  saved_ZOPEN_CPPFLAGS="${ZOPEN_CPPFLAGS-}"
+  saved_ZOPEN_LDFLAGS="${ZOPEN_LDFLAGS-}"
+  saved_ZOPEN_EXTRA_CFLAGS="${ZOPEN_EXTRA_CFLAGS-}"
+  saved_ZOPEN_EXTRA_CXXFLAGS="${ZOPEN_EXTRA_CXXFLAGS-}"
+  saved_ZOPEN_EXTRA_CPPFLAGS="${ZOPEN_EXTRA_CPPFLAGS-}"
+  saved_ZOPEN_EXTRA_LDFLAGS="${ZOPEN_EXTRA_LDFLAGS-}"
+  saved_ZOPEN_EXTRA_LIBS="${ZOPEN_EXTRA_LIBS-}"
   
   # Source the dependency (cd to make relative paths work)
   cd "$dep" 2>/dev/null && . "./.env" >/dev/null 2>&1
   cd "$saved_pwd" 2>/dev/null || true
   
   # Accumulate flags from this dependency
+  # check_clang exports ZOPEN_* variables, zoslib exports ZOPEN_EXTRA_* variables
   REAL_CC="${REAL_CC:-${CC-}}"
   REAL_CXX="${REAL_CXX:-${CXX-}}"
-  EXTRA_CFLAGS="${EXTRA_CFLAGS:+$EXTRA_CFLAGS }${ZOPEN_EXTRA_CFLAGS-}"
-  EXTRA_CXXFLAGS="${EXTRA_CXXFLAGS:+$EXTRA_CXXFLAGS }${ZOPEN_EXTRA_CXXFLAGS-}"
-  EXTRA_CPPFLAGS="${EXTRA_CPPFLAGS:+$EXTRA_CPPFLAGS }${ZOPEN_EXTRA_CPPFLAGS-}"
-  EXTRA_LDFLAGS="${EXTRA_LDFLAGS:+$EXTRA_LDFLAGS }${ZOPEN_EXTRA_LDFLAGS-}"
+  EXTRA_CFLAGS="${EXTRA_CFLAGS:+$EXTRA_CFLAGS }${ZOPEN_CFLAGS-}${ZOPEN_CFLAGS:+ }${ZOPEN_EXTRA_CFLAGS-}"
+  EXTRA_CXXFLAGS="${EXTRA_CXXFLAGS:+$EXTRA_CXXFLAGS }${ZOPEN_CXXFLAGS-}${ZOPEN_CXXFLAGS:+ }${ZOPEN_EXTRA_CXXFLAGS-}"
+  EXTRA_CPPFLAGS="${EXTRA_CPPFLAGS:+$EXTRA_CPPFLAGS }${ZOPEN_CPPFLAGS-}${ZOPEN_CPPFLAGS:+ }${ZOPEN_EXTRA_CPPFLAGS-}"
+  EXTRA_LDFLAGS="${EXTRA_LDFLAGS:+$EXTRA_LDFLAGS }${ZOPEN_LDFLAGS-}${ZOPEN_LDFLAGS:+ }${ZOPEN_EXTRA_LDFLAGS-}"
   EXTRA_LIBS="${EXTRA_LIBS:+$EXTRA_LIBS }${ZOPEN_EXTRA_LIBS-}"
   
-  # Restore ZOPEN_EXTRA_* variables
-  ZOPEN_EXTRA_CFLAGS="$saved_CFLAGS"
-  ZOPEN_EXTRA_CXXFLAGS="$saved_CXXFLAGS"
-  ZOPEN_EXTRA_CPPFLAGS="$saved_CPPFLAGS"
-  ZOPEN_EXTRA_LDFLAGS="$saved_LDFLAGS"
-  ZOPEN_EXTRA_LIBS="$saved_LIBS"
+  # Restore both ZOPEN_* and ZOPEN_EXTRA_* variables
+  ZOPEN_CFLAGS="$saved_ZOPEN_CFLAGS"
+  ZOPEN_CXXFLAGS="$saved_ZOPEN_CXXFLAGS"
+  ZOPEN_CPPFLAGS="$saved_ZOPEN_CPPFLAGS"
+  ZOPEN_LDFLAGS="$saved_ZOPEN_LDFLAGS"
+  ZOPEN_EXTRA_CFLAGS="$saved_ZOPEN_EXTRA_CFLAGS"
+  ZOPEN_EXTRA_CXXFLAGS="$saved_ZOPEN_EXTRA_CXXFLAGS"
+  ZOPEN_EXTRA_CPPFLAGS="$saved_ZOPEN_EXTRA_CPPFLAGS"
+  ZOPEN_EXTRA_LDFLAGS="$saved_ZOPEN_EXTRA_LDFLAGS"
+  ZOPEN_EXTRA_LIBS="$saved_ZOPEN_EXTRA_LIBS"
 done
 
 # Export variables for clang-zos-wrapper
