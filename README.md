@@ -1,6 +1,6 @@
-[![Automatic version updates](https://github.com/zopencommunity/clang_wrapperport/actions/workflows/bump.yml/badge.svg)](https://github.com/ZOSOpenTools/clang_wrapperport/actions/workflows/bump.yml)
+[![Automatic version updates](https://github.com/zopencommunity/clang_zos_wrapperport/actions/workflows/bump.yml/badge.svg)](https://github.com/ZOSOpenTools/clang_zos_wrapperport/actions/workflows/bump.yml)
 
-# clang_wrapper
+# clang_zos_wrapper
 
 Wrapper script which includes compiler with required flag along with zoslib compiler flags and zoslib params.
 
@@ -8,15 +8,15 @@ Wrapper script which includes compiler with required flag along with zoslib comp
 
 Use the zopen package manager ([QuickStart Guide](https://zopen.community/#/Guides/QuickStart)) to install:
 ```bash
-zopen install clang_wrapper
+zopen install clang_zos_wrapper
 ```
 
 # Building from Source
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/zopencommunity/clang_wrapperport.git
-cd clang_wrapperport
+git clone https://github.com/zopencommunity/clang_zos_wrapperport.git
+cd clang_zos_wrapperport
 ```
 2. Build using zopen:
 ```bash
