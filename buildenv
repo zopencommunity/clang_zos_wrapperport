@@ -85,7 +85,6 @@ saved_ZOPEN_EXTRA_LIBS="${ZOPEN_EXTRA_LIBS-}"
 for dep in $deps; do
   [ -f "$dep/.env" ] || continue
   
-  # Save current directory and both ZOPEN_* and ZOPEN_EXTRA_* variables
   saved_pwd="$(pwd)"
   # Source the dependency (cd to make relative paths work)
   cd "$dep" 2>/dev/null && . "./.env" >/dev/null 2>&1
