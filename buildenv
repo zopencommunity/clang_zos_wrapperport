@@ -1,7 +1,7 @@
 ###
 ### Build control file for the clang_zos_wrapper port
 ###
-export CLANG_WRAPPER_VERSION="1.0.2"
+export CLANG_WRAPPER_VERSION="1.0.3"
 ###
 ### Required Environment Variables
 ###
@@ -81,6 +81,17 @@ saved_ZOPEN_EXTRA_CXXFLAGS="${ZOPEN_EXTRA_CXXFLAGS-}"
 saved_ZOPEN_EXTRA_CPPFLAGS="${ZOPEN_EXTRA_CPPFLAGS-}"
 saved_ZOPEN_EXTRA_LDFLAGS="${ZOPEN_EXTRA_LDFLAGS-}"
 saved_ZOPEN_EXTRA_LIBS="${ZOPEN_EXTRA_LIBS-}"
+
+# Initialize flags to empty before collecting from dependencies
+ZOPEN_CFLAGS=""
+ZOPEN_CXXFLAGS=""
+ZOPEN_CPPFLAGS=""
+ZOPEN_LDFLAGS=""
+ZOPEN_EXTRA_CFLAGS=""
+ZOPEN_EXTRA_CXXFLAGS=""
+ZOPEN_EXTRA_CPPFLAGS=""
+ZOPEN_EXTRA_LDFLAGS=""
+ZOPEN_EXTRA_LIBS=""
 
 for dep in $deps; do
   [ -f "$dep/.env" ] || continue
